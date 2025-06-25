@@ -1,24 +1,24 @@
-name CI - Kustomize Validation
+name: CI - Kustomize Validation
 
-on
-  push
-    branches [ master ]
-  pull_request
+on:
+  push:
+    branches: [ master ]
+  pull_request:
 
-jobs
-  validate-kustomize
-    runs-on ubuntu-latest
+jobs:
+  validate-kustomize:
+    runs-on: ubuntu-latest
 
-    steps
-      - name Checkout código
-        uses actionscheckout@v3
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
 
-      - name Instalar Kustomize
-        run 
-          curl -s httpsraw.githubusercontent.comkubernetes-sigskustomizemasterhackinstall_kustomize.sh  bash
-          sudo mv kustomize usrlocalbin
+      - name: Instalar Kustomize
+        run: |
+          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+          sudo mv kustomize /usr/local/bin
 
-      - name Validar Kustomize build (dev)
-        run 
-          cd overlaysdev
+      - name: Validar Kustomize build (dev)
+        run: |
+          cd overlays/dev
           kustomize build .
